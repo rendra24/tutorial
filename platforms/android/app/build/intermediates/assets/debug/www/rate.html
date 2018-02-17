@@ -1,0 +1,178 @@
+ 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<link rel='stylesheet prefetch' href='http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css'>
+
+<link rel="stylesheet" href="css/rating.css">
+<style type="text/css">
+html, body {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.container-maps, .container-maps > div, .container-maps > div #map-canvas {
+  height: inherit;
+
+}
+.input-field {
+  position: relative;
+  margin-top: 0.3rem !important;
+}
+.btn-floating.btn-large i {
+  line-height: 42px;
+}
+.btn-floating.btn-large {
+  width: 40px;
+  height: 40px;
+}
+h4 {
+  font-size: 1rem;
+  line-height: 0%;
+  margin: 1.14rem 0 0.912rem 0;
+  font-weight: 600;
+}
+</style>
+
+
+<div class="container-maps">
+  <div id="map-canvas">
+
+  </div>
+</div>
+
+<div style="position: fixed;top: 0;left: 0;right: 0;background: #000;opacity: 0.6;height:100%;z-index: 9;padding-top: 40%;" class="modal_driver">
+</div>
+
+<div style="position: fixed;top: 0;left: 0;right: 0;height:100%;z-index: 99;padding-top: 40%;" class="modal_driver">
+  <h6 class="white-text center" style="    margin-bottom: 20px;">Beri rating mitra driver kami</h6>
+  <div class="row" style="padding: 15px;    margin-bottom: 0px;">
+    <div class="col s12" style="padding:15px; background: #FFF;">
+      <div class="col s12 center" style="position: relative;
+      top: -35px;margin-bottom: -25px;">
+      <img src="user.jpg" style="height: 50px;">
+    </div>
+    <h6 class="center nama-driver" style="font-size: 1.5rem;color: #666666;font-weight: 600;"></h6>
+    <h6 class="center nomor-polisi"></h6>
+  </div>
+</div>
+
+<section class='rating-widget'>
+
+  <!-- Rating Stars Box -->
+  <div class='rating-stars text-center'>
+    <ul id='stars'>
+      <li class='star' title='Poor' data-value='1'>
+        <i class='fa fa-star fa-fw'></i>
+      </li>
+      <li class='star' title='Fair' data-value='2'>
+        <i class='fa fa-star fa-fw'></i>
+      </li>
+      <li class='star' title='Good' data-value='3'>
+        <i class='fa fa-star fa-fw'></i>
+      </li>
+      <li class='star' title='Excellent' data-value='4'>
+        <i class='fa fa-star fa-fw'></i>
+      </li>
+      <li class='star' title='WOW!!!' data-value='5'>
+        <i class='fa fa-star fa-fw'></i>
+      </li>
+    </ul>
+  </div>
+  
+<!--   <div class='success-box'>
+    <div class='clearfix'></div>
+    <div class='text-message'></div>
+    <div class='clearfix'></div>
+  </div> -->
+</section>
+<input type="hidden" name="rating" id="rating">
+
+<div class="input-field col s12" style="padding: 15px;color: #FFFFFF;">
+  <textarea id="review" class="materialize-textarea" data-length="120"></textarea>
+
+</div>
+
+
+<div style="padding: 15px;">
+  <a href="home.html"  class="waves-effect waves-light btn-large" style="width: 100%;background-color: #56c6d2;font-weight: 400;font-size: 1.2rem;" id="kirim_rate">Kirim</a>
+</div>
+
+
+
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="js/rating.js"></script>
+
+
+
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.modal').modal();
+
+    $('#btn-modal2').click(function(){
+      $('#modal2').modal('open');
+    });
+
+    $('#tutup_modal').click(function(){
+      $('.modal_driver').hide();
+    });
+
+
+      
+
+    var kode_transaksi = $.urlParam('kode_transaksi');
+    $.ajax({
+      type: "POST",
+      data : {kode_transaksi:kode_transaksi},
+      dataType: 'json',
+      url: "http://ojek.aspima.id/request_client/get_data_driver/",
+      success: function(data) {
+       $('.nama-driver').text(data.nama);
+       $('.nomor-polisi').text(data.nomor_polisi);
+
+     },
+     error: function (data) {
+
+     }
+   });
+
+
+  
+
+    $('#kirim_rate').click(function(){ 
+
+     $.urlParam = function(name){
+      var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if (results==null){
+        return null;
+      }
+      else{
+        return results[1] || 0;
+      }
+    }
+
+
+     var kode_transaksi = $.urlParam('kode_transaksi');
+     var rate = $('#rating').val();
+     var review = $('#review').val();
+
+     $.ajax({
+      type: "POST",
+      data : {kode_transaksi:kode_transaksi, rate:rate, review:review},
+      url: "http://ojek.aspima.id/request_client/add_rating/",
+      success: function(data) {
+        window.location = "#/";
+
+      },
+      error: function (data) {
+
+      }
+    });
+   });
+
+
+
+  });
+</script>

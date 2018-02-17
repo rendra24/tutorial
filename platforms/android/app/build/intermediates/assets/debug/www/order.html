@@ -1,0 +1,338 @@
+ <style type="text/css">
+ html, body {
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.container-maps, .container-maps > div, .container-maps > div #map-canvas {
+  height: inherit;
+
+}
+.input-field {
+  position: relative;
+  margin-top: 0.3rem !important;
+}
+.btn-floating.btn-large i {
+  line-height: 42px;
+}
+.btn-floating.btn-large {
+  width: 40px;
+  height: 40px;
+}
+h4 {
+  font-size: 1rem;
+  line-height: 0%;
+  margin: 1.14rem 0 0.912rem 0;
+  font-weight: 600;
+}
+</style>
+
+
+<div class="container-maps">
+  <div id="map-canvas">
+
+  </div>
+</div>
+
+<div style="position: fixed;top: 0;left: 0;right: 0;background: #000;opacity: 0.6;height:100%;z-index: 9;padding-top: 40%;" class="modal_driver">
+</div>
+
+<div style="position: fixed;top: 0;left: 0;right: 0;height:100%;z-index: 99;padding-top: 40%;" class="modal_driver">
+  <h6 class="white-text center" style="    margin-bottom: 20px;">Berhasil mendapatkan pengemudi anda</h6>
+  <div class="row" style="padding: 15px;    margin-bottom: 0px;">
+    <div class="col s12" style="padding:15px; background: #FFF;">
+      <div class="col s12 center" style="position: relative;
+      top: -35px;margin-bottom: -25px;">
+      <img src="user.jpg" style="height: 50px;">
+    </div>
+    <h6 class="center nama-driver" style="font-size: 1.5rem;color: #666666;font-weight: 600;">Sujono</h6>
+    <h6 class="center nomor-polisi">N XXXX KB</h6>
+  </div>
+</div>
+<h6 class="white-text center" id="tutup_modal">Lanjutkan</h6>
+</div>
+
+<div class="row" style=" position: absolute;
+right: 0;
+bottom: 0;
+left: 0;  
+background: #FFF;
+margin-bottom: 0px;">
+ <div class="col s12" style="background-color: #2ECC71;color: #FFF;">
+  <div class="col s6">
+    <p id="tarif">Rp.20.000</p>
+  </div>
+
+  <div class="col s6">
+    <p id="jarak" style="float:right;">5km</p>
+  </div>
+  </div>
+<div class="col s12" style="padding: 12px;">
+ 
+ <!-- <a class="waves-effect waves-light btn btn-block btn-large" id="btn-modal2">Obah Motor</a> -->
+ <div class="col s3"><img src="user.jpg" style="width: 100%;"></div>
+ <div class="col s5">
+   <h4 class="nomor-polisi">N XXXX KB</h4>
+   <p class="nama-driver">Sujono</p>
+ </div>
+ <div class="col s4" style="padding-right: 0px;padding-left: 0px;padding-top: 10px;">
+   <div class="col s6 center">
+    <a class="btn-floating btn-large waves-effect waves-light obah" id="phone"><i class="material-icons">local_phone</i></a>
+  </div>
+
+  <div class="col s6 center">
+    <a class="btn-floating btn-large waves-effect waves-light obah" id="sms"> <i class="material-icons">message</i></a>
+  </div>
+</div>
+
+<div id="modal2" class="modal bottom-sheet">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 jarak" style="background: #0fadc5;
+      color: #FFF;">
+      <h5><i class="icon-scooter"></i> Obah Motor</h5>
+    </div>
+    <div class="col s12 jarak">
+      <h5><i class="icon-car"></i> Obah Car<h5>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div>
+<script type="text/javascript">
+
+
+
+
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.modal').modal();
+
+    $('#btn-modal2').click(function(){
+      $('#modal2').modal('open');
+    });
+
+    $('#tutup_modal').click(function(){
+      $('.modal_driver').hide();
+    });
+
+
+    setTimeout(function(){
+      $('.modal_driver').hide();
+    },5000)
+
+    //  setTimeout(function(){ 
+    //   window.location = "home.html#/rate";
+    // },25000)
+
+  
+
+        
+
+       // $('.nama-driver').text(data.nama);
+       // $('.nomor-polisi').text(data.nomor_polisi);
+       // $('#phone').attr("href","tel:"+data.telp);
+       // $('#sms').attr("href","sms:"+data.telp);
+       // $('#tarif').text("Rp. "+data.grand_total);
+       // $('#jarak').text(data.jarak+" km");
+
+   
+
+       var h = screen.height-60;
+       $('.container-maps').css('height',h);
+
+       var style = [
+       {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#5fb1f7" },
+        { "lightness": 17 }
+        ]
+      },
+      {
+        "featureType": "landscape",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#DDDDDD" },
+        { "lightness": 20 }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry.fill",
+        "stylers": [
+        { "color": "#FFFFFF" },
+        { "lightness": 17  }
+        ]
+      },
+      {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        { "color": "#FFFFFF" },
+        { "lightness": 29 },
+        { "weight": 0.2 }
+        ]
+      },
+      {
+        "featureType": "road.arterial",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#FFFFFF" },
+        { "lightness": 18 }
+        ]
+      },
+      {
+        "featureType": "road.local",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#FFFFFF" },
+        { "lightness": 16 }
+        ]
+      },
+      {
+        "featureType": "poi",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#DDDDDD" },
+        { "lightness": 21 }
+        ]
+      },
+      {
+        "featureType": "poi.park",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#43e84b" },
+        { "lightness": 21 }
+        ]
+      },
+      {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+        { "visibility": "on" },
+        { "color": "#FFFFFF" },
+        { "lightness": 16 }
+        ]
+      },
+      {
+        "elementType": "labels.text.fill",
+        "stylers": [
+        { "saturation": 36 },
+        { "color": "#000000" },
+        { "lightness": 40 }
+        ]
+      },
+      {
+        "elementType": "labels.icon",
+        "stylers": [
+        { "visibility": "off" }
+        ]
+      },
+      {
+        "featureType": "transit",
+        "elementType": "geometry",
+        "stylers": [
+        { "color": "#000000" },
+        { "lightness": 19  }
+        ]
+      },
+      {
+        "featureType": "administrative",
+        "elementType": "geometry.fill",
+        "stylers": [
+        { "color": "#000000" },
+        { "lightness": 20  }
+        ]
+      },
+      {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [
+        { "color": "#000000" },
+        { "lightness": 17 },
+        { "weight": 1.2 }
+        ]
+      }]
+
+
+  var marker1 = 'img/start.png';
+  var marker3 = 'img/finish.png';
+  var marker2 = 'img/ride.png';
+   var locations = [
+      ['Penjemputan Anda', -7.956812, 112.618359, 4, marker3],
+      ['Tujuan Anda', -7.978873, 112.652486, 4, marker1],
+      ['Driver', -7.958830, 112.620301, 5, marker2]
+     
+     
+    ];
+
+
+//  source = data.lat_penjemputan+','+data.lon_penjemputan;
+     //  destination = data.lat_driver+','+data.lon_driver;
+    
+
+    var map = new google.maps.Map(document.getElementById('map-canvas'), {
+      zoom: 10,
+      center: new google.maps.LatLng(-33.92, 151.25),
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true
+    });
+
+     map.setOptions({
+        styles: style
+      });
+
+    var infowindow = new google.maps.InfoWindow();
+
+    var marker, i;
+     var bounds = new google.maps.LatLngBounds();
+    for (i = 0; i < locations.length; i++) {  
+     var myLatLng = new google.maps.LatLng(locations[i][1], locations[i][2]);
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+        map: map,
+        icon: locations[i][4]
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+
+         bounds.extend(myLatLng);
+    }
+
+     map.fitBounds(bounds);
+
+
+
+
+
+
+  });
+
+
+
+</script>
+<script>
+  var kode_transaksi = $.urlParam('kode_transaksi');
+  var pusher = new Pusher('ee75187e221d6324a8ae', {
+    cluster: 'ap1'
+  });
+  var channel = pusher.subscribe(kode_transaksi);
+  channel.bind('order', function(data) {
+    window.location.href = "#/rate?kode_transaksi="+kode_transaksi;
+  });
+
+   channel.bind('tiba', function(data) {
+     Materialize.toast('Driver telah tiba di lokasi !', 2000);
+  });
+
+</script>

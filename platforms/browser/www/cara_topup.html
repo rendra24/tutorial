@@ -1,0 +1,125 @@
+  <script type="text/javascript">
+    nama = localStorage.getItem("name");
+    saldo = localStorage.getItem("saldo");
+    email = localStorage.getItem("email");
+    telp = localStorage.getItem("telp");
+
+
+    $('.name').text(nama);
+    $('.saldo').text(saldo);
+    $('.email').text(email);
+  </script>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a  class="brand-logo" href="home.html#/"><img src="img/logo_header.png" style="height: 29px;"></a>
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        
+        
+
+      </div>
+    </nav>
+  </div>
+
+  <div id="modal1" class="modal" style="width: 90%;">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s6 center" style="padding: 10px;">
+          <i class="medium material-icons">settings_voice</i><br>
+          <h5>Voxice</h5>
+        </div>
+        <div class="col s6 center" style="padding: 10px;">
+          <i class="medium material-icons">polymer</i>
+          <h5>Polimer</h5>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <ul id="slide-out" class="side-nav">
+    <li><div class="userView">
+      <div class="background" style="background-color: #000000;">
+        <!-- <img src="images/office.jpg"> -->
+      </div>
+      <a href="#/profile" class="tutup"><img class="circle" src="user.jpg"></a>
+      <a href="#/profile" class="tutup"><span class="white-text name"></span></a>
+      <a href="#/profile" class="tutup white-text">Saldo : <span class="white-text saldo"></span></a>
+    </div></li>
+    <!-- <li><a class="waves-effect" href="#!">Payment</a></li> -->
+
+    <li><a class="waves-effect tutup" href="#/topup">Topup</a></li>
+    
+    
+    <li><a class="waves-effect tutup" href="#/history">Your Trips  <!-- <span class="new badge red">4</span> --></a></li>
+    
+    <!-- <li><a class="waves-effect" href="#!">Help</a></li> -->
+
+    <!-- <li><a class="waves-effect" href="#!">Setting</a></li> -->
+
+  </ul> 
+
+  <script type="text/javascript">
+    $(".button-collapse").sideNav();
+    $('.tutup').click(function(){
+      $('.button-collapse').sideNav('hide');
+    });
+
+    $(document).ready(function(){
+      $('.collapsible').collapsible();
+    });
+  </script>
+
+  <div class="container">
+
+
+    <div class="row">
+      <div class="col s12">
+
+
+       <ul class="collapsible" data-collapsible="accordion">
+        <li class="active">
+          <div class="collapsible-header active"><i class="material-icons">monetization_on</i>BCA</div>
+          <div class="collapsible-body">
+            <h5 style="font-size: 1.2rem !important;">
+            <b>2350389752 <br>
+            R M Adi Nugroho Listyo B.K</b>
+            </h5>
+
+            1.Tranfer Ke rekening BCA milih obah <br>
+            2.Konfirmasi pada halaman konfirmasi topup <br>
+            3.Pilih bank OBAH yang anda transfer <br>
+            4.Pilih Bank yang anda gunakan <br>
+            5.Masukkan jumlah yang anda tranfer <br> 
+            6.Selesai
+
+          </div>
+        </li>
+        <li>
+          <div class="collapsible-header"><i class="material-icons">monetization_on</i>BRI</div>
+          <div class="collapsible-body">
+            <h5 style="font-size: 1.2rem !important;">
+            <b>005 101 127 132 505 <br>
+            Muhammad Adi Nugroho Listiyo</b>
+            </h5>
+
+            1.Tranfer Ke rekening BRI milih obah <br> 
+            2.Konfirmasi pada halaman konfirmasi topup <br>
+            3.Pilih bank OBAH yang anda transfer <br>
+            4.Pilih Bank yang anda gunakan <br>
+            5.Masukkan jumlah yang anda tranfer <br>
+            6.Selesai
+          </div>
+        </li>
+    <!-- <li>
+      <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+      <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+    </li> -->
+  </ul>
+
+</div>
+</div>
+</div>

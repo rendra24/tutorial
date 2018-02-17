@@ -1,0 +1,183 @@
+<style type="text/css">
+.select-wrapper input.select-dropdown
+{
+	color: #c3c3c3;
+}
+
+.button-close
+{
+	    float: left;
+    position: relative;
+    z-index: 1;
+    height: 56px;
+    margin: 0 18px;
+}
+</style>
+<script type="text/javascript">
+	nama = localStorage.getItem("name");
+	saldo = localStorage.getItem("saldo");
+	email = localStorage.getItem("email");
+	telp = localStorage.getItem("telp");
+
+
+
+
+	$('.name').text(nama);
+	$('.saldo').text(saldo);
+	$('.email').text(email);
+	$('#device').val(localStorage.getItem("device"));
+</script>
+<div class="navbar-fixed">
+	<nav>
+		<div class="nav-wrapper">
+			<a  class="brand-logo" href="home.html#/"><img src="img/logo_header.png" style="    height: 40px;
+    margin-top: 8px;"></a>
+			<a href="#/beranda" class="button-close"><i class="material-icons">close</i></a>
+		</div>
+	</nav>
+</div>
+
+
+
+<script type="text/javascript">
+	$(".button-collapse").sideNav();
+	$('.tutup').click(function(){
+		$('.button-collapse').sideNav('hide');
+	});
+</script>
+<div class="row">
+	<div class="col s12 center">
+			<h5 class="center">Topup</h5><br>
+
+		<label>Topup melalui rekening berikut : </label>
+		<select  name="bank" id="bank_obah" >
+				<option value=""  selected  onchange="bank();">-- Pilih Rekening Bank --</option>
+				<option value="mandiri">MANDIRI</option>
+				<option value="bri">BRI</option>
+			</select>
+
+			<img id="img" style="height: 100px;max-width: 300px;    margin-top: -25px;" src="img/mandiri.png">
+			<h5 id="nama_obah" style="line-height: 60%;font-size:1rem !important;">CV tripOjek Indonesia</h5>
+			<p id="rekening" style="line-height: 10px;">99999999999</p>
+			<br>
+				<h5 class="center">Konfirmasi Topup</h5><br>
+	
+			<input type="hidden" id="device" value="333">
+			<input type="number" name="no_rek" id="no_rek"  placeholder="No Rekening"/>
+
+
+			<input type="text" name="atas_nama" id="atas_nama"  placeholder="Atas Nama"/>
+
+
+			<input type="number" name="nominal" id="nominal"  onkeyup="formatNumber();" placeholder="Nominal" />
+			<div id="hasil">
+
+			</div>
+
+		</div>
+
+
+	</div>
+</div>
+
+
+
+
+<div class="row"">
+<div class="col s12">
+	<button id="konfirmasi" class="waves-effect waves-light btn-large" style="width: 100%;background-color: #56c6d2;font-weight: 400;font-size: 1.2rem;">Konfirmasi</button>
+</div>
+</div>
+
+<script type="text/javascript">
+	function formatNumber () {
+		var num = $('#nominal').val();
+		if(num==""){
+			var hasil = toRp(0);
+		}else{
+			var hasil = toRp(num);
+		}
+
+		$('#hasil').text(hasil);
+
+
+	}
+
+	function toRp(a,b,c,d,e){
+		e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+''
+	}
+
+	$(document).ready(function() {
+		$('select').material_select();
+		$('#konfirmasi').click(function(){
+			no_rek = $('#no_rek').val();
+			atas_nama = $('#atas_nama').val();
+			nominal = $('#nominal').val();
+			bank_obah = $('#bank_obah').val();
+			device	= $('#device').val();
+			kategori	= 'client';
+
+				if(no_rek == '')
+			{
+				alert('No Rekening harus di isi')
+				return false;
+			}
+
+			if(atas_nama == '')
+			{
+				alert('Atas Nama harus di isi');
+				return false;
+			}
+
+			if(nominal == '')
+			{
+				alert('Nominal harus di isi');
+				return false;
+			}
+
+			if(bank_obah == '')
+			{
+				alert('Pilih Salah satu bank');
+				return false;
+			}
+
+			$.ajax({
+				type: "POST",
+				data : {no_rek:no_rek,atas_nama:atas_nama,nominal:nominal,bank_obah:bank_obah,device:device,kategori:kategori},
+				url: "http://ojek.aspima.id/request_client/add_topup/",
+				success: function(data) {
+					
+					$('#no_rek').val('');
+					$('#atas_nama').val('');
+					$('#nominal').val('');
+					$('#bank_obah').val('');
+					Materialize.toast('Konfirmasi berhasil !', 3000);
+
+				},
+				error: function(data) {
+
+				}
+			});
+		});
+
+
+	});
+
+
+	$('select').on('change', function() {
+		bank = this.value;
+
+		if(bank == 'bri')
+		{
+			$('#rekening').text('007801000250565');
+			$('#nama_obah').text('CV tripOjek Indonesia');
+			$('#img').attr('src','img/bri.png');
+		}else{
+			$('#rekening').text('1360033876662');
+			$('#nama_obah').text('CV tripOjek Indonesia');
+			$('#img').attr('src','img/mandiri.png');
+		}
+		
+	})
+
+</script>

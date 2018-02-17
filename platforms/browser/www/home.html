@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Route</title>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<link href="https://file.myfontastic.com/ooB2GoYAbwY7Mg6wgzc96/icons.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="css/materialize.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmAHM8giuTV9XaTpr7V8dtXVU7noA_mWY&libraries=places"></script>
+	<script type="text/javascript" src="js/pusher.min.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+
+	<script type="text/javascript">
+		document.addEventListener("deviceready", onDeviceReady, false);
+
+		function onDeviceReady() { 
+
+			var uid = 123;
+			var device_client = 123;
+
+			localStorage.setItem('device',device_client);
+
+			$.ajax({
+				type: "POST",
+				data : {device_client:device_client},
+				dataType:'json',
+				//url: "http://ojek.aspima.id/request_client/get_profile/",
+				success: function(data) {
+					
+					localStorage.setItem('name',data.nama);
+					localStorage.setItem('saldo',data.saldo);
+					localStorage.setItem('email',data.email);
+					localStorage.setItem('telp',data.telp);
+
+					$('.name').text(data.nama);
+					$('.saldo').text(data.saldo);
+					$('.email').text(data.email);
+
+					
+
+
+				},
+				error: function (data) {
+
+				}
+			});
+
+			
+			
+			// device = 123;
+			// $.ajax({
+			// 	type: "POST",
+			// 	data: {device:device},
+			// 	//url: "http://ojek.aspima.id/request_client/cek_transaksi/",
+			// 	success: function(data) {
+			// 		if(data == "order"){
+
+			// 		}else{
+			// 			window.location = 'home.html#/order?kode_transaksi='+data;
+			// 		}
+					
+
+			// 	},
+			// });
+
+			
+			
+
+			
+	//uid = '333';
+	$('#device').val(uid);
+
+
+}
+</script>
+<style type="text/css">
+nav
+{
+	background-color: #FFFFFF !important;
+}
+.tabs .tab a {
+	color: rgba(0, 0, 0, 0.7) !important;
+
+}
+.form-custom
+{
+	background-color: transparent;
+	border: 1px solid #DDD !important;
+	border-radius: 3px !important;
+	outline: none;
+	height: 3.5rem !important;
+	width: auto;
+	font-size: 1.5rem !important;
+	margin: 0 0 20px 0;
+	box-shadow: none;
+	box-sizing: content-box;
+	box-shadow: 3px 3px 3px #DDD !important;
+	padding-right: 10px !important;
+	padding-left:10px !important;
+}
+.icon
+{
+	font-size: 2em;
+}
+.btn-block
+{
+	width: 100%;
+}
+.jarak
+{
+	/*border-bottom: 1px solid #c1baba;*/
+	background: #FFF;
+	padding: 15px !important; 
+}
+.modal .modal-content {
+	padding: 0px !important; 
+}
+h5
+{
+	font-size: 1.5rem !important;
+}
+i.medium {
+	font-size: 3rem !important;
+}
+
+.button-close
+{
+	float: left;
+	position: relative;
+	z-index: 1;
+	height: 56px;
+	margin: 0 18px;
+}
+
+nav a {
+    color: #000;
+}
+</style>
+<script>
+	$.urlParam = function(name){
+		var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+		if (results==null){
+			return null;
+		}
+		else{
+			return results[1] || 0;
+		}
+	}
+</script>
+</head>
+<body ng-app="myapp">
+	
+
+	
+	<div ui-view></div>
+
+	
+
+
+
+
+
+	<script type="text/javascript" src="js/materialize.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/lodash.js"></script>
+	<script src="js/restangular.min.js"></script>
+	<script src="js/angular-ui-router.min.js"></script>
+	<script src="app.js"></script>
+	
+</body>
+</html>

@@ -1,0 +1,154 @@
+<style type="text/css">
+body{
+	background: #3d3d3d;	
+}
+.promo
+{
+ background: #37bfff;
+ color: #FFF;
+ border-radius: 3px;
+ padding: 2px;
+ text-align: center;
+ font-size: 12px;
+}
+.material-icons
+{
+  font-size: 18px;
+}
+h5
+{
+  font-size: 1rem !important;
+}
+.button-close
+{
+      float: left;
+    position: relative;
+    z-index: 1;
+    height: 56px;
+    margin: 0 18px;
+}
+</style>
+
+</script>
+<script type="text/javascript">
+  nama = localStorage.getItem("name");
+  saldo = localStorage.getItem("saldo");
+  email = localStorage.getItem("email");
+  telp = localStorage.getItem("telp");
+
+
+  
+
+  $('.name').text(nama);
+  $('.saldo').text(saldo);
+  $('.email').text(email);
+  
+  device = localStorage.getItem('device');
+  //device = 'f062c1034c5583bc';
+  $.ajax({
+    type: "POST",
+    data : {device:device},
+    dataType:'json',
+    url: "http://ojek.aspima.id/request_client/get_history/",
+    success: function(data) {
+
+     $.each(data, function (key, val) {
+
+      var alamat_penjemputan = val.alamat_penjemputan
+      var penjemputan = alamat_penjemputan.substr(0, 30);
+
+
+      var alamat_tujuan = val.alamat_tujuan
+      var tujuan = alamat_tujuan.substr(0, 30);
+      $('#history').append("<div class='row' style='background: #FFF;border: 1px solid #DDD;padding: 5px;margin-top: 10px;'>"+
+        "<div class='col s12' style='border-bottom: 1px solid #DDD;padding: 3px;'>"+
+        "<div class='col s3'><div class='promo'>Promo</div></div>"+
+        "<div class='col s9 ' style='text-align: right;font-size: 12px;font-weight: 600;'>"+val.tanggal_order+"</div>"+
+        "</div>"+
+        "<div class='col s12'>"+
+        "<div class='col s12'>"+
+        "<div class='col s3' style='padding-top: 8px;'><i class='material-icons'>brightness_1</i></div><div class='col s9'><h5>"+penjemputan+"</h5></div>"+
+        "<div class='col s3' style='padding-top: 8px;'><i class='material-icons'>place</i></div><div class='col s9'><h5>"+tujuan+"</h5></div>"+
+        "</div>"+
+        "<div class='col s3'>"+
+        
+        "</div>"+
+        "</div>"+
+        "</div>");
+      
+    });
+     
+
+   },
+   error: function (data) {
+
+   }
+ });
+</script>
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper">
+      <a  class="brand-logo" href="home.html#/"><img src="img/logo_header.png" style="    height: 40px;
+    margin-top: 8px;"></a>
+      <a href="#/beranda" class="button-close"><i class="material-icons">close</i></a>
+      
+      
+
+    </div>
+  </nav>
+</div>
+
+
+
+<script type="text/javascript">
+  $(".button-collapse").sideNav();
+  $('.tutup').click(function(){
+    $('.button-collapse').sideNav('hide');
+  });
+</script>
+<div id="history">
+
+  <div class='row' style='background: #FFF;border: 1px solid #DDD;padding: 5px;margin-top: 10px;'>
+        <div class='col s12' style='border-bottom: 1px solid #DDD;padding: 3px;'>
+        <div class='col s3'><div class='promo'>Promo</div></div>
+        <div class='col s9 ' style='text-align: right;font-size: 12px;font-weight: 600;'>12 Febuari 2018</div>
+        </div>
+        <div class='col s12'>
+        <div class='col s12'>
+        <div class='col s3' style='padding-top: 8px;'><i class='material-icons'>brightness_1</i></div><div class='col s9'><h5>Malang Town Squeare</h5></div>
+        <div class='col s3' style='padding-top: 8px;'><i class='material-icons'>place</i></div><div class='col s9'><h5>Jalan Pamungkasan timur 12</h5></div>
+        </div>
+        <div class='col s3'>
+        
+        </div>
+        </div>
+        </div>
+</div>
+
+<div class='row' style='background: #FFF;border: 1px solid #DDD;padding: 5px;margin-top: 10px;'>
+        <div class='col s12' style='border-bottom: 1px solid #DDD;padding: 3px;'>
+        <div class='col s3'><div class='promo'>Promo</div></div>
+        <div class='col s9 ' style='text-align: right;font-size: 12px;font-weight: 600;'>12 Febuari 2018</div>
+        </div>
+        <div class='col s12'>
+        <div class='col s12'>
+        <div class='col s3' style='padding-top: 8px;'><i class='material-icons'>brightness_1</i></div><div class='col s9'><h5>Malang Town Squeare</h5></div>
+        <div class='col s3' style='padding-top: 8px;'><i class='material-icons'>place</i></div><div class='col s9'><h5>Jalan Pamungkasan timur 12</h5></div>
+        </div>
+        <div class='col s3'>
+        
+        </div>
+        </div>
+        </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+	$('#detail').click(function(){
+		window.location = "#/detail_history";
+	});
+
+
+</script>

@@ -1,0 +1,1601 @@
+ <script type="text/javascript">
+
+  document.addEventListener("deviceready", onDeviceReady, false);
+
+  function onDeviceReady() { 
+
+
+    document.addEventListener("backbutton", onBackKeyDown, false);
+
+    var tarif_local = localStorage.getItem('motor1');
+    
+
+    if(tarif_local == null)
+    {
+
+      $.ajax({
+        type: "POST",
+        dataType:"json",
+        url: "http://ojek.aspima.id/request_client/tarif_motor/",
+        success: function(data) {
+          localStorage.setItem('motor1',data.tarif_1);
+          localStorage.setItem('motor2',data.tarif_2);
+
+
+        },
+      });
+
+      
+      $.ajax({
+        type: "POST",
+        dataType:"json",
+        url: "http://ojek.aspima.id/request_client/tarif_car/",
+        success: function(data) {
+          localStorage.setItem('car1',data.tarif_1);
+          localStorage.setItem('car2',data.tarif_2);
+
+
+        },
+      });
+      
+    }
+
+
+    $('#exit').click(function(){
+     var y = confirm("Keluar Aplikasi??");
+     if(y == true)
+     {
+
+      navigator.app.exitApp();
+    }
+  });
+
+
+  }
+  function onBackKeyDown()
+  {
+      // var y = confirm("Keluar Aplikasi??");
+      // if(y == true)
+      // {
+
+      //   navigator.app.exitApp();
+      // }
+    }
+  </script>
+
+  <style type="text/css">
+  html, body {
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .container-maps, .container-maps > div, .container-maps > div #map-canvas {
+    height: inherit;
+
+  }
+  input[type=text]
+  {
+    color: rgb(115, 115, 115);
+    border-bottom: 1px solid rgb(103, 103, 103);
+  }
+
+  input[type=text]:focus:not([readonly]), input[type=text].valid
+  {
+    border-bottom: 1px solid #56c6d2;
+    box-shadow: 0 1px 0 0 #56c6d2;
+  }
+
+  body {
+    background-color: #f1f1f1;
+    font-family: Helvetica,Arial,Verdana;
+
+  }
+  h1 {
+    color: green;
+    text-align: center;
+  }
+
+  .bg-active
+  {
+    background: #2ecc71;
+    color: #FFF !important;
+  }
+
+  .icon-marker {
+    margin: 0px;
+    padding: 0px;
+    z-index: 9;
+    position: absolute;     
+    
+    cursor: pointer;
+
+  }
+
+  .none
+  {
+    display: none !important;
+  }
+  /* Clearable text inputs */
+  .clearable{
+    position: relative;
+    display: inline-block;
+  }
+  .clearable input[type=text]{
+    padding-right: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .clearable__clear{
+    display: none;
+       position: absolute;
+    right: 10px;
+    top: 9px;
+    padding: 0 8px;
+    font-style: normal;
+    font-size: 1.5em;
+    user-select: none;
+    cursor: pointer;
+    background-color: #FFF;
+  }
+  .clearable input::-ms-clear {  /* Remove IE default X */
+    display: none;
+  }
+</style>
+<script type="text/javascript">
+  nama = localStorage.getItem("name");
+  saldo = localStorage.getItem("saldo");
+  email = localStorage.getItem("email");
+  telp = localStorage.getItem("telp");
+  dev = localStorage.getItem("device");
+
+
+
+
+  $('#device').val(dev);
+  // $('.name').text(nama);
+  // $('.saldo').text(saldo);
+  // $('.email').text(email);
+</script>
+<script type="text/javascript">
+ var h = screen.height-58;
+ $('.container-maps').css('height',h);
+
+ var wm = ((screen.width-38)/2);
+ var hm = ((screen.height-130)/2);
+
+ $(".icon-marker").css("top",-hm);
+ $(".icon-marker").css("left",wm);
+
+
+ var map;
+ var geocoder;
+ var bounds = new google.maps.LatLngBounds();
+ var markersArray = [];
+ var centerPos = new google.maps.LatLng(-7.9657193,112.6211369);
+ var style = [
+ {
+  "featureType": "water",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#5fb1f7" },
+  { "lightness": 17 }
+  ]
+},
+{
+  "featureType": "landscape",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#DDDDDD" },
+  { "lightness": 20 }
+  ]
+},
+{
+  "featureType": "road.highway",
+  "elementType": "geometry.fill",
+  "stylers": [
+  { "color": "#FFFFFF" },
+  { "lightness": 17  }
+  ]
+},
+{
+  "featureType": "road.highway",
+  "elementType": "geometry.stroke",
+  "stylers": [
+  { "color": "#FFFFFF" },
+  { "lightness": 29 },
+  { "weight": 0.2 }
+  ]
+},
+{
+  "featureType": "road.arterial",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#FFFFFF" },
+  { "lightness": 18 }
+  ]
+},
+{
+  "featureType": "road.local",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#FFFFFF" },
+  { "lightness": 16 }
+  ]
+},
+{
+  "featureType": "poi",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#DDDDDD" },
+  { "lightness": 21 }
+  ]
+},
+{
+  "featureType": "poi.park",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#43e84b" },
+  { "lightness": 21 }
+  ]
+},
+{
+  "elementType": "labels.text.stroke",
+  "stylers": [
+  { "visibility": "on" },
+  { "color": "#FFFFFF" },
+  { "lightness": 16 }
+  ]
+},
+{
+  "elementType": "labels.text.fill",
+  "stylers": [
+  { "saturation": 36 },
+  { "color": "#000000" },
+  { "lightness": 40 }
+  ]
+},
+{
+  "elementType": "labels.icon",
+  "stylers": [
+  { "visibility": "off" }
+  ]
+},
+{
+  "featureType": "transit",
+  "elementType": "geometry",
+  "stylers": [
+  { "color": "#000000" },
+  { "lightness": 19  }
+  ]
+},
+{
+  "featureType": "administrative",
+  "elementType": "geometry.fill",
+  "stylers": [
+  { "color": "#000000" },
+  { "lightness": 20  }
+  ]
+},
+{
+  "featureType": "administrative",
+  "elementType": "geometry.stroke",
+  "stylers": [
+  { "color": "#000000" },
+  { "lightness": 17 },
+  { "weight": 1.2 }
+  ]
+}]
+
+    // setting marker untuk marker asal dan tujuan
+    //var destinationIcon = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=D|FF0000|000000";
+    //var originIcon = "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=O|FFFF00|000000";
+
+    var destinationIcon = "img/finish.png";
+    var originIcon = "img/start.png";
+    var icon_ride = "img/ride.png";
+    var icon_car = "img/car.png";
+    // tentukan terlebih dahulu letak petanya 
+    function initialize() {
+
+
+      var x = document.getElementById("penjemputan");
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+
+      } else {
+       alert("Geolocation is not supported .");
+     }
+
+
+     function showPosition(position) {
+
+      var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      geocoder = new google.maps.Geocoder();
+
+      initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      map.setCenter(initialLocation);
+
+
+      $('#lat_penjemputan').val(position.coords.latitude);
+      $('#lon_penjemputan').val(position.coords.longitude);
+
+
+      geocoder.geocode({'latLng': myLatlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          console.log(results)
+          if (results[1]) {
+
+            $('#penjemputan').val(results[0].formatted_address);  
+
+
+
+            for (var i = 0; i < results.length; i++) {
+              if (results[i].types[0] === "locality") {
+                var city = results[i].address_components[0].short_name;
+                var state = results[i].address_components[2].short_name;
+
+
+                $('#lokasi').val(city);
+
+
+              }
+            }
+
+
+          } else {
+            location.reload();
+          }
+        } else {
+                //alert("Geocoder failed due to: " + status);
+              }
+            });
+
+      centerPos =  myLatlng;
+
+      var infowindow = new google.maps.InfoWindow();
+
+      var marker, i;
+      //var longitude = position.coords.longitude;
+      //var latitude = position.coords.latitude;
+      var location = "1";
+
+
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+
+
+      $.ajax({
+        type: "POST",
+        url: "http://ojek.aspima.id/request_client/marker_driver/",
+        data:{longitude:longitude,latitude:latitude,location:location},
+        dataType:"json",
+        success: function(data) {
+
+         //$('#tujuan').val(data);
+
+         var locations = [];
+          //var color = [];
+          $.each(data, function(index, element) {
+
+            //var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+
+            locations.push([element.lat_driver, element.lon_driver, 4]);
+            //color.push(element.status);
+
+            return locations;
+            
+
+          });
+
+          
+
+          var i;
+          jml_marker = locations.length;
+          for (var i = 0; i < jml_marker; i++) {
+           marker = new google.maps.Marker({
+            position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+            map: map,
+            icon: icon_ride,
+          });
+         }
+
+
+
+       },
+       error: function (data) {
+
+       }
+     });
+
+      $('.obah_car').click(function(){
+
+        $.ajax({
+          type: "POST",
+          url: "http://ojek.aspima.id/request_client/marker_driver_car/",
+          data:{longitude:longitude,latitude:latitude,location:location},
+          dataType:"json",
+          success: function(data) {
+
+           $.ajax({
+            type: "POST",
+            url: "http://ojek.aspima.id/request_client/marker_driver/",
+            data:{longitude:longitude,latitude:latitude,location:location},
+            dataType:"json",
+            success: function(data) {
+             var carss = [];
+
+             $.each(data, function(index, element) {
+              carss.push([element.lat_driver, element.lon_driver, 4]);
+              return locations;        
+            });
+
+             var i;
+             jml_marker = carss.length;
+             for (var i = 0; i < jml_marker; i++) {
+              markers[i].setMap(map);
+            }
+          },
+          error: function (data) {
+
+          }
+        });
+
+
+
+
+           var locations = [];
+           $.each(data, function(index, element) {
+            locations.push([element.lat_driver, element.lon_driver, 4]);
+            return locations;
+          });
+
+
+           var i;
+           jml_marker = locations.length;
+           for (var i = 0; i < jml_marker; i++) {
+             marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+              map: map,
+              icon: icon_car,
+            });
+           }
+
+
+         },
+         error: function (data) {
+
+         }
+       });
+
+        $(this).addClass("bg-active");
+        $('.obah_ride').removeClass("bg-active");
+        $('.text-btn').text("Obah Car");
+        $('#kategori').val('car');
+        $('#modal2').modal('close');
+        $('#kode_armada').val(1);
+        pembayaran_car();
+
+      });
+
+      $('.obah_ride').click(function(){
+        $.ajax({
+          type: "POST",
+          url: "http://ojek.aspima.id/request_client/marker_driver/",
+          data:{longitude:longitude,latitude:latitude,location:location},
+          dataType:"json",
+          success: function(data) {
+
+           var locations = [];
+
+           $.each(data, function(index, element) {
+
+            locations.push([element.lat_driver, element.lon_driver, 4]);
+
+            return locations;
+
+
+          });
+
+           var i;
+           jml_marker = locations.length;
+           for (var i = 0; i < jml_marker; i++) {
+             marker = new google.maps.Marker({
+              position: new google.maps.LatLng(locations[i][0], locations[i][1]),
+              map: map,
+              icon: icon_ride,
+            });
+           }
+
+         },
+         error: function (data) {
+
+         }
+       });
+        $(this).addClass("bg-active");
+        $('.obah_car').removeClass("bg-active");
+        $('.text-btn').text("Obah Motor");
+        $('#kategori').val('ride');
+        $('#modal2').modal('close');
+        $('#kode_armada').val(4);
+        pembayaran_motor();
+      });
+
+
+
+    }
+
+    function addYourLocationButton(map) 
+    {
+      var controlDiv = document.createElement('div');
+
+      var firstChild = document.createElement('button');
+      firstChild.style.backgroundColor = '#fff';
+      firstChild.style.border = 'none';
+      firstChild.style.outline = 'none';
+      firstChild.style.width = '28px';
+      firstChild.style.height = '28px';
+      firstChild.style.borderRadius = '2px';
+      firstChild.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+      firstChild.style.cursor = 'pointer';
+      firstChild.style.marginRight = '10px';
+      firstChild.style.marginBottom = '100px';
+      firstChild.style.padding = '0px';
+      firstChild.title = 'Your Location';
+      controlDiv.appendChild(firstChild);
+
+      var secondChild = document.createElement('div');
+      secondChild.style.margin = '5px';
+      secondChild.style.width = '18px';
+      secondChild.style.height = '18px';
+      secondChild.style.backgroundImage = 'url(https://maps.gstatic.com/tactile/mylocation/mylocation-sprite-1x.png)';
+      secondChild.style.backgroundSize = '180px 18px';
+      secondChild.style.backgroundPosition = '0px 0px';
+      secondChild.style.backgroundRepeat = 'no-repeat';
+      secondChild.id = 'you_location_img';
+      firstChild.appendChild(secondChild);
+
+      google.maps.event.addListener(map, 'dragend', function() {
+        $('#you_location_img').css('background-position', '0px 0px');
+      });
+
+      firstChild.addEventListener('click', function() {
+        var imgX = '0';
+        var animationInterval = setInterval(function(){
+          if(imgX == '-18') imgX = '0';
+          else imgX = '-18';
+          $('#you_location_img').css('background-position', imgX+'px 0px');
+        }, 500);
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+           //marker.setPosition(latlng);
+           map.setCenter(latlng);
+           clearInterval(animationInterval);
+           $('#you_location_img').css('background-position', '-144px 0px');
+         });
+        }
+        else{
+          clearInterval(animationInterval);
+          $('#you_location_img').css('background-position', '0px 0px');
+        }
+      });
+
+      controlDiv.index = 1;
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(controlDiv);
+    }
+
+
+
+    var opts = {
+      center: centerPos,
+      zoom: 14,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true
+    };
+    map = new google.maps.Map(document.getElementById('map-canvas'), opts);
+    geocoder = new google.maps.Geocoder();
+
+    addYourLocationButton(map);
+
+    map.setOptions({
+      styles: style
+    });
+
+
+    google.maps.event.addListener(map, 'dragend', function () {
+      geocoder = new google.maps.Geocoder();
+      var latlng = new google.maps.LatLng(this.getCenter().lat(), this.getCenter().lng());
+      geocoder.geocode({'latLng': latlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          console.log(results)
+          if (results[1]) {
+
+                    // for (var i = 0; i < results.length; i++) {
+                    //   if (results[i].types[0] === "locality") {
+                    //     var city = results[i].address_components[0].short_name;
+                    //     var state = results[i].address_components[2].short_name;
+
+                    //     $('#kota').val(city);
+
+                    //   }
+                    // }
+
+
+                    $('#default_latitude').val(map.getCenter().lat());  
+                    $('#default_longitude').val(map.getCenter().lng());
+
+
+
+
+                  } else {
+                    //alert("Alamat tidak ditemukan");
+                  }
+                } else {
+                  //alert("Geocoder failed due to: " + status);
+                }
+              });
+
+    });
+
+
+
+
+    document.getElementById('set_tujuan').addEventListener('click', function() {
+     geocoder_penjemputan = new google.maps.Geocoder;
+     var latlng = new google.maps.LatLng  ($('#default_latitude').val(),$('#default_longitude').val());
+
+     geocoder_penjemputan.geocode({'location': latlng}, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        if (results[1]) {
+          console.log(results);
+          var address = (results[0].formatted_address);
+          $("#tujuan").val(results[0].formatted_address);
+          $('#lan_tujuan').val(map.getCenter().lat());  
+          $('#lon_tujuan').val(map.getCenter().lng());
+          $('.icon-marker').addClass('none');
+          //alert(address);
+          cek_input();
+
+          calculateDistances();
+
+
+
+          
+
+
+
+
+        } 
+      } else {
+        //window.alert('Alamat tidak di temukan ');
+         //alert($('#tujuan').val());
+
+         $('.btn-large').show();
+         cek_input();
+
+         calculateDistances();
+       }
+     });
+   });
+
+
+
+
+
+
+
+
+    var input = (document.getElementById('tujuan'));
+    var autocomplete_tujuan = new google.maps.places.Autocomplete(input);
+    autocomplete_tujuan.bindTo('bounds', map);
+    autocomplete_tujuan.addListener('place_changed', function() {
+
+
+      var place = autocomplete_tujuan.getPlace();
+      if (!place.geometry) {
+        window.alert("Maaf alamat yang anda masukkan tidak di temukan");
+        return;
+      }
+
+
+      if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+        map.setZoom(16);
+
+        $('#set_tujuan').show();
+        $('.icon-marker').show();
+        $('.btn-large').hide();
+
+        $('#lat_tujuan').val(map.getCenter().lat());  
+        $('#lon_tujuan').val(map.getCenter().lng());
+
+
+        
+        //cek_input();
+
+        //calculateDistances();
+
+      } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(16); 
+      }
+    });
+
+    var input = (document.getElementById('penjemputan'));
+    var autocomplete_jemput = new google.maps.places.Autocomplete(input);
+    autocomplete_jemput.bindTo('bounds', map);
+    autocomplete_jemput.addListener('place_changed', function() {
+
+
+      var place = autocomplete_jemput.getPlace();
+      if (!place.geometry) {
+        window.alert("Maaf alamat yang anda masukkan tidak di temukan");
+        return;
+      }
+
+
+      if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+        map.setZoom(16);
+
+
+        $('#lat_penjemputan').val(map.getCenter().lat());  
+        $('#lon_penjemputan').val(map.getCenter().lng());
+
+        if($('#distance').val() != '')
+        {
+          calculateDistances();
+        }
+
+        cek_input();
+
+
+
+      } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(16); 
+      }
+    });
+
+
+  }
+
+
+  function calculateDistances() {
+
+
+    if(document.getElementById("tujuan").value =="" || document.getElementById("penjemputan").value =="" ){
+      alert("Set penjemputan anda");
+    }else{
+      $('.icon-marker').hide();
+      var service = new google.maps.DistanceMatrixService();
+      service.getDistanceMatrix(
+      { 
+            //origins: [document.getElementById("origins").value],
+            origins: [document.getElementById("penjemputan").value], 
+            destinations: [document.getElementById("tujuan").value],
+            travelMode: google.maps.TravelMode.DRIVING, 
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+          }, callback);
+    }
+
+  }
+
+    // responde dari Googlemaps Distance Matrix akan diolah dan di kirim ke output HTML
+    function callback(response, status) {
+      if (status != google.maps.DistanceMatrixStatus.OK) {
+        //alert('Error was: ' + status);
+      } else {
+        var origins = response.originAddresses;
+        var destinations = response.destinationAddresses;
+        deleteOverlays();
+
+        for (var i = 0; i < origins.length; i++) {
+          var results = response.rows[i].elements;
+          addMarker(origins[i], false);
+          for (var j = 0; j < results.length; j++) {
+            addMarker(destinations[j], true);
+          }
+
+          /*          
+            disini perhitungan tarif, pertama hilangkan dulu 'km'
+            dan ubah tanda desimal koma dengan titik. 
+            */
+            var str = results[0].distance.text;
+            var distance = str.replace(' km', '');
+            var distance = distance.replace(',','.');
+
+          /*          
+            jumlah kilometer dikalikan dengan 500 
+            setelah itu hasilnya kita konversikan kedalam format kurs rupiah
+            */
+            // var harga1 = document.getElementById("motor1").value;
+            // var harga2 = document.getElementById("motor2").value;
+            // var harga3 = document.getElementById("car1").value;
+            // var harga4 = document.getElementById("car2").value;
+
+            var harga1 = 8000;
+            var harga2 = 2000;
+            var harga3 = 10000;
+            var harga4 = 30000;
+
+
+
+            if(distance < 2)
+            {
+             var tarif_motor = harga1;
+             var tarif_car =   harga3; 
+
+             var saldo1 = 20 / 100 * tarif_motor;
+             var saldo2 = 20 / 100 * tarif_car;
+             var tarif_saldo_motor =  tarif_motor - saldo1;
+             var tarif_saldo_car =  tarif_car - saldo2;
+
+           }else if(distance > 2){
+             var lebihnya = distance - 2;
+             var tarif_awal = parseInt(harga1);
+             var tarif_perkilo = lebihnya * parseInt(harga2);
+             var tarif_motor = tarif_awal + tarif_perkilo;
+
+             var lebihnya1 = distance - 2;
+             var tarif_awal1 = parseInt(harga3);
+             var tarif_perkilo1 = lebihnya1 * parseInt(harga4);
+             var tarif_car = tarif_awal1 + tarif_perkilo1;
+
+
+             var saldo1 = 20 / 100 * tarif_motor;
+             var saldo2 = 20 / 100 * tarif_car;
+             var tarif_saldo_motor =  tarif_motor - saldo1;
+             var tarif_saldo_car =  tarif_car - saldo2;
+
+
+
+           }else{
+            calculateDistances();
+          }
+
+          if(tarif_motor != NaN)
+          {
+
+
+
+
+           if(tarif_motor != '' && tarif_motor != null && tarif_motor != 'NaN'){
+            var val_text = $('.text-btn').attr("id");
+
+            if(val_text = 'btn-motor')
+            {
+              $('.tarif_motor').text(tarif_motor);
+              $('.tarif_saldo_motor').text(tarif_saldo_motor);
+            }else
+            {
+              $('.tarif_motor').text(tarif_car);
+              $('.tarif_saldo_motor').text(tarif_saldo_car);
+            }
+
+            // document.getElementById("billing").value = tarif;
+            // document.getElementById("distance").value = results[0].distance.text;
+
+
+            set_harga(tarif_motor);
+            $('#tarif_awal').val(tarif_motor);
+            set_harga1(tarif_car);
+            $('.motor_saldo').text(tarif_saldo_motor);
+            $('.car_saldo').text(tarif_saldo_car);
+            set_distance(distance);
+          }else{
+            $('.btn-large').hide();
+            alert("Maaf Alamat penjemputan atau tujuan anda tidak di temukan");
+          }
+
+        }
+
+            //tarif default
+            kategori = $('#kategori').val();
+            if(kategori == 'ride')
+            {
+              tarif_fix(tarif_motor);
+              $('.tarif_motor').text(tarif_motor);
+            }else{
+              tarif_fix(tarif_car);
+              $('.tarif_motor').text(tarif_car);
+            }
+            
+
+
+
+          }
+        }
+      }
+    // fungsi sederhana untuk mengkonversi bilangan bulat menjadi format kurs rupiah
+    function formatNumber (num) {
+      return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.")
+    }
+
+    // menampilkan marker untuk origin dan juga destination
+    function addMarker(location, isDestination) {
+      var icon;
+      if (isDestination) {
+        icon = destinationIcon;
+      } else {
+        icon = originIcon;
+      }
+      geocoder.geocode({'address': location}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          bounds.extend(results[0].geometry.location);
+          map.fitBounds(bounds);
+          var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location,
+            icon: icon
+          });
+          markersArray.push(marker);
+
+
+
+
+
+        } else {
+          //alert("Terjadi kesalahan: "
+          //  + status);
+        }
+      });
+
+
+
+    }
+
+    // menghapus koordinat marker sebelumnya dan menggantinya dengan koordinat yang baru
+    function deleteOverlays() {
+      if (markersArray) {
+        for (i in markersArray) {
+          markersArray[i].setMap(null);
+        }
+        markersArray.length = 0;
+      }
+    }
+
+    initialize();
+
+  </script>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper">
+        <a  class="brand-logo" href="home.html#/"><img src="img/logo_header.png" style="height: 40px;margin-top: 8px;"></a>
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+        
+        
+
+      </div>
+    </nav>
+  </div>
+
+  <div id="modal1" class="modal" style="width: 90%;">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s6 center" style="padding: 10px;">
+          <i class="icon-scooter" style=" font-size: 3em;"></i><br>
+          <h5>Transport</h5>
+        </div>
+        <div class="col s6 center" style="padding: 10px;" id="home_food">
+          <i class="icon-cutlery" style=" font-size: 3em;"></i>
+          <h5>Food</h5>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <ul id="slide-out" class="side-nav">
+    <li><div class="userView">
+      <div class="background" style="background-color: #000000;">
+        <!-- <img src="images/office.jpg"> -->
+      </div>
+      <a href="#/profile" class="tutup"><img class="circle" src="user.jpg"></a>
+      <a href="#/profile" class="tutup"><span class="white-text name">M Afrizal</span></a>
+      <a href="#/profile" class="tutup white-text">Saldo : <span class="white-text saldo">Rp. 20.000</span></a>
+    </div></li>
+    <!-- <li><a class="waves-effect" href="#!">Payment</a></li> -->
+
+    <li><a class="waves-effect tutup" href="#/topup">Topup</a></li>
+    
+    
+    <li><a class="waves-effect tutup" href="#/history">Your Trips  <!-- <span class="new badge red">4</span> --></a></li>
+    
+    <li><a class="waves-effect tutup" href="beranda-step2.html">Cari Driver</a></li>
+
+    <li><a class="waves-effect tutup" href="#/order">Order</a></li>
+
+    <li><a class="waves-effect tutup" href="#/rate">Rating</a></li>
+    <!-- <li><a class="waves-effect" href="#!">Help</a></li> -->
+
+    <li><a class="waves-effect" id="exit">Exit</a></li>
+
+
+
+
+  </ul> 
+
+  <script type="text/javascript">
+    $(".button-collapse").sideNav();
+    $('.tutup').click(function(){
+      $('.button-collapse').sideNav('hide');
+    });
+  </script>
+  <div>
+    <input type="hidden" id="motor1">
+    <input type="hidden" id="motor2">
+    <input type="hidden" id="car1">
+    <input type="hidden" id="car2">
+    <input type="hidden" id="car">
+
+  </div>
+
+  <div class="container-maps">
+    <div id="map-canvas">
+
+    </div>
+  </div>
+  <div class="row" style="
+  background: rgb(255, 255, 255);
+  top: 70px;
+  left: 10px;
+  right: 10px;
+  position: absolute;
+  border-radius: 5px;
+  border: 1px solid #DDD;
+  z-index: 1;">
+  <div class="col s12">
+   <div class="input-field col s12" style="margin-top: 0px;">
+    <input id="penjemputan" placeholder="Masukkan lokasi jemput" type="text" class="validate">
+      <i class="clearable__clear">&times;</i>
+    <input type="hidden" id="lat_penjemputan">
+    <input type="hidden" id="lon_penjemputan">
+  </div>
+
+  <div class="input-field col s12" style="margin-top: -10px;">
+    <input style="font-style: italic;" id="tujuan" placeholder="Mau ke mana?" type="text" class="validate">
+    <i class="clearable__clear">&times;</i>
+    <input type="hidden" id="lat_tujuan">
+    <input type="hidden" id="lon_tujuan">
+    <input type="hidden" id="default_latitude">
+    <input type="hidden" id="default_longitude">
+  </div>
+
+  <input type="hidden" id="distance">
+
+  <input type="hidden" id="kategori" value="ride">
+  <input type="hidden" id="lokasi">
+  <input type="hidden" id="kode_armada" value="4">
+  <input type="hidden" id="device">
+</div>
+
+
+
+</div>
+
+<div class="row" id="menu_pembayaran" style="background: #F9f9f9;
+top: 179px;
+left: 10px;
+right: 10px;
+position: absolute;
+z-index: 0;
+margin: 6px;
+border-radius: 5px;
+display: none;">
+<div class="col s12">
+ <div class="input-field col s6" style="margin-top: 0px;">
+   <i class="material-icons" id="check" style="margin-top: 15px;color: #54dc4c;display: none;">check</i>
+   <input id="promo" placeholder="Promo" type="text" class="validate" readonly="">
+
+ </div>
+
+
+
+ <div class="input-field col s6" style="margin-top: 0px;">
+  <input id="btn-modal4" placeholder="Cash" value="cash" type="text" class="validate" readonly="">
+</div>
+
+<input type="hidden" id="tarif">
+<input type="hidden" id="tarif_awal">
+</div>
+</div>
+
+
+
+<div class="row" style="
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+padding-top: 20px;
+padding-bottom: 20px;
+margin-bottom: 0px;">
+
+<div class="col s12">
+ <a class="waves-effect waves-light btn btn-block btn-large" id="btn-modal2" style="margin-bottom: 15px;text-align: left;color: #666;
+ background-color: #ffffff;" ><div class="text-btn" id="btn-motor">Motor</div>
+ <div style="float: right;font-size: 10px;margin-top: -55px;" class="jarak_motor">
+  <span style="font-size: 14px" class="tarif_motor"></span>
+  <span style="font-size: 14px;display: none;" class="tarif_saldo_motor"></span>
+</div>
+</a>
+
+<img src="img/finish.png" alt="" class="icon-marker" style="display: none;">
+<a id="set_penjemputan" style="display: none;width: 100%;" class="waves-effect waves-light btn">Set penjemputan</a>
+<a id="set_tujuan"  class="waves-effect waves-light btn" style="display:none;width: 100%;">Set Tujuan</a>
+
+<!-- <a  class="waves-effect waves-light btn-large" style="width: 100%;background-color: #56c6d2;font-weight: 400;font-size: 1.2rem;display: none;" id="order">Pesan</a> -->
+
+<a href="beranda-step2.html"  class="waves-effect waves-light btn-large" style="width: 100%;background-color: #56c6d2;font-weight: 400;font-size: 1.2rem;display: none;">Pesan</a>
+
+
+<div id="modal2" class="modal bottom-sheet">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 obah_ride bg-active" style="
+      color: #333;    padding: 16px 15px;">
+      <h5><i class="icon-scooter"></i> Motor
+       <div style="float: right;font-size: 10px;" class="jarak_motor">
+        <span style="font-size: 14px" class="motor"></span>
+        <span style="font-size: 14px;display: none;" class="motor_saldo"></span>
+      </div>
+    </h5>
+  </div>
+  <div class="col s12 obah_car" style="    padding: 16px 15px;margin-bottom: -20px;color: #333;">
+    <h5><i class="icon-car"></i> Car
+     <div style="float: right;font-size: 10px;" class="jarak_car">
+      <span style="font-size: 14px" class="car"></span>
+      <span style="font-size: 14px;display: none;" class="car_saldo"></span>
+    </div>
+    <h5>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="modal4" class="modal bottom-sheet">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 option_pembayaran" style="background: #0fadc5;color: #FFF;padding: 16px 15px;" key="cash">
+        <h5>Cash
+         <div style="float: right;font-size: 10px;" class="jarak_motor">
+          <span style="font-size: 14px" ></span>
+        </div>
+      </h5>
+    </div>
+    <div class="col s12 option_pembayaran" style="padding: 16px 15px;margin-bottom: -20px" key="saldo">
+      <h5> Obah Pay
+       <div style="float: right;font-size: 10px;" class="jarak_car">
+        <span style="font-size: 14px" ></span>
+      </div>
+      <h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="modal3" class="modal bottom-sheet" style="max-height: 100%;top:0px;">
+  <div class="modal-content">
+    <nav>
+      <div class="nav-wrapper">
+        <a  class="brand-logo" style="font-size: 1.5rem;">Reward</a>
+        <a href="#"  class="button-collapse" id="close-modal3"><i class="material-icons">close</i></a>
+      </div>
+    </nav>
+    <nav>
+      <div class="nav-wrapper">
+        <form>
+          <div class="input-field">
+            <input id="search" type="search" required>
+            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+            <i class="material-icons">close</i>
+          </div>
+        </form>
+      </div>
+    </nav>
+
+
+    <div id="result" style="display: none;">
+
+      <div class="row">
+
+        <div class="col s6">
+          <div class="card darken-1">
+            <div class="card-content center">
+              <i class="medium material-icons">label</i>
+              <span class="card-title" style="font-size: 16px;">SELAU HEMAT</span>
+              
+            </div>
+            <div class="center" style="font-size: 16px;padding: 10px 0px; border-top: 1px solid #DDD;">
+              <a href="#" id="use_promo">Pakai</a>
+              
+            </div>
+
+            <input type="hidden" id="discon">
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+  $('.brand-logo').click(function(){
+   $('#modal1').modal('open');
+ });
+  $('#home_food').click(function(){
+    window.location = "home_food.html";
+  });
+
+  $('.obah_car').click(function(){
+    $(this).addClass("bg-active");
+    $('.obah_ride').removeClass("bg-active");
+    $('.text-btn').text("Obah Car");
+    $('#kategori').val('car');
+    $('#modal2').modal('close');
+    $('#kode_armada').val(1);
+    pembayaran_car();
+
+  });
+
+  $('.obah_ride').click(function(){
+   $(this).addClass("bg-active");
+   $('.obah_car').removeClass("bg-active");
+   $('.text-btn').text("Obah Motor");
+   $('#kategori').val('ride');
+   $('#modal2').modal('close');
+   $('#kode_armada').val(4);
+   pembayaran_motor();
+ });
+
+  $('#destinations').click(function(){
+    window.location = "#/step2";
+  });
+
+  $('#order').click(function(){
+
+    device = $('#device').val();
+    lat_penjemputan = $('#lat_penjemputan').val();
+    lon_penjemputan = $('#lon_penjemputan').val();
+    penjemputan = $('#penjemputan').val();
+    lat_tujuan = $('#lat_tujuan').val();
+    lon_tujuan = $('#lon_tujuan').val();
+    tujuan = $('#tujuan').val();
+    distance = $('#distance').val();
+    tarif = $('#tarif').val();
+    kategori = $('#kategori').val();
+    kode_armada = $('#kode_armada').val();
+    lokasi = $('#lokasi').val();
+    promo = $('#promo').val();
+    tarif_awal = $('#tarif_awal').val();
+    pembayaran = $('#btn-modal4').val();
+
+    formdata = {device:device, lat_penjemputan:lat_penjemputan,lon_penjemputan:lon_penjemputan,penjemputan:penjemputan, lat_tujuan:lat_tujuan,lon_tujuan:lon_tujuan,tujuan:tujuan, distance:distance, tarif:tarif ,kategori:kategori, kode_armada:kode_armada, lokasi:lokasi, promo:promo, tarif_awal:tarif_awal, pembayaran:pembayaran}
+
+    $.ajax({
+      type: "POST",
+      url: "http://ojek.aspima.id/request_client/order",
+      data: formdata,
+      success: function(data) {
+
+       window.location.href = "beranda-step2.html?kode_transaksi="+data;
+
+     },
+     error: function (data) {
+
+     }
+   });
+
+  });
+
+  $('#search').keyup(function(){
+    var val = $(this).val();
+    $.ajax({
+      type: "POST",
+      url: "http://ojek.aspima.id/request_client/cek_promo",
+      dataType: 'json',
+      data: {val:val},
+      success: function(data) {
+
+
+        if(data.kode_promo == 0)
+        {
+          $('#result').hide();          
+        }else{
+          $('.card-title').text(data.kode_promo);
+          $('#discon').val(data.discon);
+          $('#result').show(); 
+        }
+
+
+      },
+      error: function (data) {
+
+      }
+    });
+  });
+
+  $(document).ready(function(){
+
+    $(".input-field").each(function() {
+
+      var $inp = $(this).find("input:text"),
+      $cle = $(this).find(".clearable__clear");
+
+      $inp.on("input", function(){
+        $cle.toggle(!!this.value);
+      });
+
+      $cle.on("touchstart click", function(e) {
+        e.preventDefault();
+        $inp.val("").trigger("input");
+      });
+
+    });
+
+
+    get_harga();
+    get_harga_car();
+
+    $('.modal').modal();
+
+    $('#btn-modal2').click(function(){
+      $('#modal2').modal('open');
+    });
+    $('#btn-modal4').click(function(){
+      $('#modal4').modal('open');
+    });
+
+    $('#promo').click(function(){
+      var val = $(this).val();
+      if(val != '')
+      {
+
+      }else{
+        $('#modal3').modal('open');
+      }
+
+    });
+
+    $('#close-modal3').click(function(){
+      $('#modal3').modal('close');
+    });
+
+    $('#use_promo').click(function(){
+    //   dev = localStorage.getItem("device");
+    //     $.ajax({
+    //   type: "POST",
+    //   url: "http://ojek.aspima.id/request_client/cek_record_promo/",
+    //   data: {dev:dev, kode_promo:kode_promo},
+    //   success: function(data) {
+
+    //   },
+    //   error: function (data) {
+
+    //   }
+    // });
+
+    var kode_promo= $('.card-title').text();
+    $('#promo').val(kode_promo);
+    $('#check').show().addClass('prefix');
+    $('#modal3').modal('close');
+    Materialize.toast('Enjoy your ride !', 4000);
+  });
+
+    $('.container-maps').click(function(){
+      $('#penjemputan').focusout();
+      $('#tujuan').focusout();
+    });
+
+    $('#tujuan').focus(function(){
+      var tarif = $('#tarif').val();
+      if(tarif == '')
+      {
+        $('.btn-large').hide();
+      }
+
+
+    });
+
+    $('.option_pembayaran').click(function(){
+
+      option = $(this).attr('key');
+
+
+      if(option == 'cash')
+      {
+        $('.tarif_motor').show();
+        $('.tarif_saldo_motor').hide();
+        $('.motor_saldo').hide();
+        $('.car_saldo').hide();
+        $('.motor').show();
+        $('.car').show();
+        $('#btn-modal4').val('cash');
+        var tarif = $('#tarif_motor').text();
+        $('.tarif').val(tarif);
+      }else if(option == 'saldo')
+      {
+
+        saldo_client = localStorage.getItem("saldo");
+        kategori = $('#kategori').val();
+        tarif_saldo = $('.car_saldo').text();
+        tarif_saldo1 =  $('.motor').text();
+
+        if(kategori == 'car')
+        {
+          if(saldo_client < parseInt(tarif_saldo))
+          {
+            alert('saldo tidak cukup')
+          }else{
+
+            $('.tarif_motor').hide();
+            $('.tarif_saldo_motor').show();
+            $('.motor_saldo').show();
+            $('.car_saldo').show();
+            $('.motor').hide();
+            $('.car').hide();
+            $('#btn-modal4').val('saldo');
+            var tarif = $('.tarif_saldo_motor').text();
+            $('#tarif').val(tarif);
+
+          }
+        }else if(kategori == 'ride')
+        {
+          if(saldo_client < parseInt(tarif_saldo1))
+          {
+            alert('saldo tidak cukup')
+          }else{
+
+            $('.tarif_motor').hide();
+            $('.tarif_saldo_motor').show();
+            $('.motor_saldo').show();
+            $('.car_saldo').show();
+            $('.motor').hide();
+            $('.car').hide();
+            $('#btn-modal4').val('saldo');
+            var tarif = $('.tarif_saldo_motor').text();
+            $('#tarif').val(tarif);
+
+          }
+        }
+
+      }
+
+      $('#modal4').modal('close');
+
+    });
+
+  });
+
+  function get_harga(){
+
+    $("#motor1").val(localStorage.getItem("motor1"));
+    $("#motor2").val(localStorage.getItem("motor2"));
+    $("#car1").val(localStorage.getItem("car1"));
+    $("#car2").val(localStorage.getItem("car2"));
+
+  }
+
+  function get_harga_car(){
+    $.ajax({
+      type: "POST",
+      url: "http://ojek.aspima.id/request_client/get_harga_car/",
+      success: function(data) {
+        $("#car").val(data);
+      },
+      error: function (data) {
+
+      }
+    });
+  }
+  function set_harga(tarif1){
+    $(".motor").text(tarif1);
+
+  }
+
+  function set_harga1(tarif1){
+    $(".car").text(tarif1);
+  }
+
+  function set_distance(distance)
+  {
+    $('#distance').val(distance);
+  }
+  function tarif_fix(tarif)
+  {
+    $('#tarif').val(tarif);
+  }
+
+  function cek_input(){
+    var tujuan = $('#tujuan').val();
+    var penjemputan = $('#penjemputan').val();
+
+    if(tujuan != '' && penjemputan != '')
+    {
+      $('#order').show();
+      $('#menu_pembayaran').show();
+      $('.btn-large').show();
+      $('#set_tujuan').hide();
+    }
+
+  }
+
+  function pembayaran_motor()
+  {
+   var pembayaran = $('#btn-modal4').val();
+
+   if(pembayaran == 'saldo')
+   {
+    var value_motor_saldo = $('.motor_saldo').text();
+    $('.tarif_saldo_motor').text(value_motor_saldo);
+    $('#tarif').val(value_motor_saldo);
+
+
+  }else if(pembayaran == 'cash'){
+    var value_car = $('.motor').text();
+    $('.tarif_motor').text(value_car);
+    $('#tarif').val(value_car);
+  }else{
+    var value_car = $('.motor').text();
+    $('.tarif_motor').text('');
+    $('#tarif').val('');
+  }
+
+  var value_car = $('.motor').text();
+  $('#tarif_awal').val(value_car);
+}
+
+
+function pembayaran_car()
+{
+ var pembayaran = $('#btn-modal4').val();
+
+ if(pembayaran == 'saldo')
+ {
+  var value_car_saldo = $('.car_saldo').text();
+  $('.tarif_saldo_motor').text(value_car_saldo);
+  $('#tarif').val(value_car_saldo);
+
+}else if(pembayaran == 'cash'){
+  var value_car = $('.car').text();
+  $('.tarif_motor').text(value_car);
+  $('#tarif').val(value_car);
+}else{
+  var value_car = $('.car').text();
+  $('.tarif_motor').text('');
+  $('#tarif').val('');
+}
+
+var value_car = $('.car').text();
+$('#tarif_awal').val(value_car);
+}
+
+
+
+
+
+</script>
+
+

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<!-- CSS -->
+	<!-- load bootstrap (bootswatch version) -->
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<link href="https://file.myfontastic.com/ooB2GoYAbwY7Mg6wgzc96/icons.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="css/materialize.css">
+	<link rel="stylesheet" href="style.css">
+	
+	<!-- JS -->
+	<!-- load angular, ngRoute, ngAnimate -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="js/angular.js"></script>
+	<script src="js/angular-route.js"></script>
+	<script src="js/angular-animate.js"></script>
+	<script src="app.js"></script>
+		
+	<style type="text/css">
+		nav
+		{
+			background-color: #000000 !important;
+		}
+		.tabs .tab a {
+			color: rgba(0, 0, 0, 0.7) !important;
+
+		}
+		.form-custom
+		{
+			background-color: transparent;
+			border: 1px solid #DDD !important;
+			border-radius: 3px !important;
+			outline: none;
+			height: 3.5rem !important;
+			width: auto;
+			font-size: 1.5rem !important;
+			margin: 0 0 20px 0;
+			box-shadow: none;
+			box-sizing: content-box;
+			 box-shadow: 3px 3px 3px #DDD !important;
+			 padding-right: 10px !important;
+			 padding-left:10px !important;
+		}
+		.icon
+		{
+			font-size: 2em;
+		}
+		.btn-block
+		{
+			width: 100%;
+		}
+		.jarak
+		{
+			/*border-bottom: 1px solid #c1baba;*/
+			background: #FFF;
+    		padding: 15px !important; 
+		}
+		.modal .modal-content {
+     padding: 0px !important; 
+}
+h5
+{
+    font-size: 1.5rem !important;
+}
+i.medium {
+    font-size: 3rem !important;
+}
+	</style>
+</head>
+
+<!-- apply our angular app -->
+<body ng-app="animateApp">
+	<div class="navbar-fixed">
+		<nav>
+			<div class="nav-wrapper">
+				<a  class="brand-logo" href="home.html#/"><img src="img/logo_header.png" style="height: 29px;"></a>
+				<a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+			</div>
+		</nav>
+	</div>
+
+	 <div id="modal1" class="modal" style="width: 90%;">
+    <div class="modal-content">
+    <div class="row">
+      <div class="col s6 center" style="padding: 10px;">
+      	<i class="medium material-icons">settings_voice</i><br>
+      	<h5>Voxice</h5>
+      </div>
+      <div class="col s6 center" style="padding: 10px;">
+      	<i class="medium material-icons">polymer</i>
+      	<h5>Polimer</h5>
+      </div>
+      </div>
+      
+
+    </div>
+ 
+  </div>
+
+
+	<ul id="slide-out" class="side-nav">
+		<li><div class="userView">
+			<div class="background" style="background-color: #000000;">
+				<!-- <img src="images/office.jpg"> -->
+			</div>
+			<a href="#!user"><img class="circle" src="user.jpg"></a>
+			<a href="#!name"><span class="white-text name">John Doe</span></a>
+			<a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+		</div></li>
+		<li><a class="waves-effect" href="#!">Payment</a></li>
+		
+		<li><a class="waves-effect" href="#!">Your Trips  <span class="new badge red">4</span></a></li>
+		
+		<li><a class="waves-effect" href="#contact">Help</a></li>
+
+		<li><a class="waves-effect" href="#about">Setting</a></li>
+
+	</ul>	
+
+    <!-- inject our views using ng-view -->
+	<!-- each angular controller applies a different class here -->
+	<div class="container">
+	<div class="page {{ pageClass }}" ng-view></div>
+	</div>
+		
+</body>
+<script type="text/javascript" src="js/materialize.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+	// $('.brand-logo').click(function(){
+	// 	 alert('fafaf');
+	// 	 $('#modal1').modal('open');
+	// });
+
+	$('.waves-effect').click(function(){
+		$('.side-nav').css('transform', 'translateX(-100%)');
+		$('.data-target').css('left','0px');
+		$('#sidenav-overlay').css('opacity','0');
+		$('body').css('width','');
+		$('body').css('overflow', '');
+	});
+
+
+	 $('.modal').modal();
+});
+	$(".button-collapse").sideNav();
+
+</script>
+</html>

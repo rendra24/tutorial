@@ -1,0 +1,135 @@
+<style type="text/css">
+.myform
+{
+  background-color: #ededed !important;
+  border: 1px solid #DDD !important;
+  border-radius: 3px !important;
+  outline: none;
+  height: 3rem !important;
+  width: auto;
+  font-size: 1rem !important;
+  text-align: center !important;
+  box-shadow: none;
+  box-sizing: content-box;
+  box-shadow: 3px 3px 3px #DDD !important;
+  padding-right: 0px !important; 
+  padding-left: 10px !important;
+  color: #000000;
+  margin: 0 0 0px 0 !important;
+}
+</style>
+<script type="text/javascript">
+        nama = localStorage.getItem("name");
+        saldo = localStorage.getItem("saldo");
+        email = localStorage.getItem("email");
+        telp = localStorage.getItem("telp");
+
+
+        // $('#nama').val(nama);
+        // $('#telp').val(telp);
+        // $('#email').val(email);
+
+        // $('.name').text(nama);
+        // $('.saldo').text(saldo);
+        // $('.email').text(email);
+  
+
+
+
+</script>
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper">
+      <a  class="brand-logo" href="home.html#/"><img src="img/logo_header.png" style="    height: 40px;
+    margin-top: 8px;"></a>
+      <a href="#/beranda" class="button-close"><i class="material-icons">close</i></a>
+      
+      
+
+    </div>
+  </nav>
+</div>
+
+  <div id="modal1" class="modal" style="width: 90%;">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col s6 center" style="padding: 10px;">
+          <i class="medium material-icons">settings_voice</i><br>
+          <h5>Voxice</h5>
+        </div>
+        <div class="col s6 center" style="padding: 10px;">
+          <i class="medium material-icons">polymer</i>
+          <h5>Polimer</h5>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+  <ul id="slide-out" class="side-nav">
+    <li><div class="userView">
+      <div class="background" style="background-color: #000000;">
+        <!-- <img src="images/office.jpg"> -->
+      </div>
+      <a href="#/profile" class="tutup"><img class="circle" src="user.jpg"></a>
+      <a href="#/profile" class="tutup"><span class="white-text name"></span></a>
+      <a href="#/profile" class="tutup white-text">Saldo : <span class="white-text saldo"></span></a>
+    </div></li>
+    <!-- <li><a class="waves-effect" href="#!">Payment</a></li> -->
+
+     <li><a class="waves-effect tutup" href="#/topup">Topup</a></li>
+    
+    
+    <li><a class="waves-effect tutup" href="#/history">Your Trips  <!-- <span class="new badge red">4</span> --></a></li>
+    
+    <!-- <li><a class="waves-effect" href="#!">Help</a></li> -->
+
+    <!-- <li><a class="waves-effect" href="#!">Setting</a></li> -->
+
+  </ul> 
+
+  <script type="text/javascript">
+    $(".button-collapse").sideNav();
+    $('.tutup').click(function(){
+      $('.button-collapse').sideNav('hide');
+    });
+  </script>
+<div class="row" style="background-color: #DDD;height: 150px;background: url('img/city.png');    background-repeat: no-repeat;
+    background-size: contain;">
+
+</div>
+<div class="row">
+  <div class="col s12" style="    width: 97%;">
+
+    <div class="input-field col s12">
+      <input  id="nama" type="text" class="myform" value="M Afrizal">
+    </div>
+    <div class="input-field col s12">
+      <input  id="telp" type="text" class="myform" value="087663679920">
+    </div>
+    <div class="input-field col s12">
+      <input  id="email" type="text" class="myform" value="afrizal@gmail.com">
+    </div>
+    <div class="col s12 " style="text-align: center;margin-top: 20px;">
+      <!-- <p>You e-recceipts will be send to this email.</p> -->
+    </div>
+    
+  </div>
+</div>
+
+<div class="row" style="background: #FFFFFF;
+position: absolute;
+border-top: 1px solid #DDD;
+bottom: 0;
+left: 0;
+right: 0;
+padding-top: 10px;
+padding-bottom: 10px;
+margin-bottom: 0px;
+text-align: center;">
+Logout
+</div>
+

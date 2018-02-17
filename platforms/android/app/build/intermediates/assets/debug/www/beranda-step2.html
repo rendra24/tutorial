@@ -1,0 +1,345 @@
+  <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Route</title>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <!-- <link href="https://file.myfontastic.com/ooB2GoYAbwY7Mg6wgzc96/icons.css" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="css/materialize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+ 
+
+<link rel="stylesheet" type="text/css" href="css/cari_driver.css">
+  <script type="text/javascript" src="js/pusher.min.js"></script>
+  <script type="text/javascript" src="cordova.js"></script>
+
+  <script type="text/javascript">
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() { 
+
+      var uid = device.uuid;
+      var device_client = device.uuid;
+
+      localStorage.setItem('device',device_client);
+
+      $.ajax({
+        type: "POST",
+        data : {device_client:device_client},
+        dataType:'json',
+        url: "http://ojek.aspima.id/request_client/get_profile/",
+        success: function(data) {
+          
+          localStorage.setItem('name',data.nama);
+          localStorage.setItem('saldo',data.saldo);
+          localStorage.setItem('email',data.email);
+          localStorage.setItem('telp',data.telp);
+
+          $('.name').text(data.nama);
+          $('.saldo').text(data.saldo);
+          $('.email').text(data.email);
+
+          
+
+
+        },
+        error: function (data) {
+
+        }
+      });
+
+      
+      
+      device = device.uuid;
+      $.ajax({
+        type: "POST",
+        data: {device:device},
+        url: "http://ojek.aspima.id/request_client/cek_transaksi/",
+        success: function(data) {
+          if(data == "order"){
+
+          }else{
+            window.location = 'home.html#/order?kode_transaksi='+data;
+          }
+          
+
+        },
+      });
+
+      
+      
+
+      
+  //uid = '333';
+  $('#device').val(uid);
+
+
+}
+</script>
+<style type="text/css">
+nav
+{
+  background-color: #000000 !important;
+}
+.tabs .tab a {
+  color: rgba(0, 0, 0, 0.7) !important;
+
+}
+.form-custom
+{
+  background-color: transparent;
+  border: 1px solid #DDD !important;
+  border-radius: 3px !important;
+  outline: none;
+  height: 3.5rem !important;
+  width: auto;
+  font-size: 1.5rem !important;
+  margin: 0 0 20px 0;
+  box-shadow: none;
+  box-sizing: content-box;
+  box-shadow: 3px 3px 3px #DDD !important;
+  padding-right: 10px !important;
+  padding-left:10px !important;
+}
+.icon
+{
+  font-size: 2em;
+}
+.btn-block
+{
+  width: 100%;
+}
+.jarak
+{
+  /*border-bottom: 1px solid #c1baba;*/
+  background: #FFF;
+  padding: 15px !important; 
+}
+.modal .modal-content {
+  padding: 0px !important; 
+}
+h5
+{
+  font-size: 1.5rem !important;
+}
+i.medium {
+  font-size: 3rem !important;
+}
+
+.button-close
+{
+  float: left;
+  position: relative;
+  z-index: 1;
+  height: 56px;
+  margin: 0 18px;
+}
+ input[type=text]
+  {
+   color: rgb(255, 255, 255);
+   border-bottom: 1px solid rgb(255, 254, 254);
+ }
+
+ body
+ {
+  background: #414141;
+}
+</style>
+<script>
+  $.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+      return null;
+    }
+    else{
+      return results[1] || 0;
+    }
+  }
+</script>
+</head>
+<body ng-app="myapp">
+  
+
+
+
+<!-- <script type="text/javascript" src="js/cari_driver.js"></script> -->
+<div id='loadhalaman'>
+  <div class='loadball-2'></div>
+  <div class='loadball'></div>
+  
+</div>
+<div class="row" style="    background: #414141;
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+padding-top: 20px;
+padding-bottom: 20px;
+margin-bottom: 0px;">
+<div class="col s12">
+  <div class="col s12">
+    <div class="background-obah nama-driver" style="color:#FFF;padding: 10px;border:1px solid #26a69a;border-radius: 2px;margin-bottom: 15px;">
+      Mencari driver
+    </div>
+    
+  </div>
+
+  <div class="col s12 center">
+
+   <a class="btn-floating btn-large waves-effect waves-light obah background-obah" id="btn-modal3"><i class="material-icons">close</i></a>
+   
+ </div>
+
+</div>
+</div>
+
+<div id="modal3" class="modal bottom-sheet" style="max-height: 60%;height: 37%;">
+  <div class="modal-content">
+    <div class="row">
+      <div class="col s12 obah_car" style="padding: 16px 15px;border-bottom: 1px solid #DDD;" key="Terlalu lama menunggu driver">
+        <h5><i class="icon-scooter"></i> Terlalu lama menunggu driver
+         <div style="float: right;font-size: 10px;" class="jarak_motor">
+          <span style="font-size: 14px" class="motor"></span>
+        </div>
+      </h5>
+    </div>
+    <div class="col s12 obah_car" style="    padding: 16px 15px;margin-bottom: -20px;border-bottom: 1px solid #DDD;" key="Salah memasukan alamat">
+      <h5><i class="icon-car"></i> Salah memasukan alamat
+       <div style="float: right;font-size: 10px;" class="jarak_car">
+        <span style="font-size: 14px" class="car"></span>
+      </div>
+      <h5>
+      </div>
+    </div>
+    <div class="col s12 obah_car" style="    padding: 16px 15px;margin-bottom: -20px" key="Tidak ada driver yang mengambil">
+      <h5><i class="icon-car"></i> Tidak ada driver yang mengambil
+       <div style="float: right;font-size: 10px;" class="jarak_car">
+        <span style="font-size: 14px" class="car"></span>
+      </div>
+      <h5>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $('.modal').modal();
+
+    $('#btn-modal3').click(function(){
+      $('#modal3').modal('open');
+    });
+
+
+    $('.obah_car').click(function(){
+      val = $(this).attr('key');
+      kode_transaksi = $.urlParam('kode_transaksi');
+      $.ajax({
+        type: "POST",
+        data : {kode_transaksi:kode_transaksi,val:val},
+        url: "http://ojek.aspima.id/request_client/batal_order/",
+        success: function(data) {
+          $('#modal3').modal('close');
+          window.location = 'home.html#/';
+
+        },
+        error: function(data) {
+
+        }
+      });
+    });
+
+
+       setInterval(function(){
+          driver_lain();
+        }, 20000);
+    
+   
+
+  });
+
+
+  function driver_lain(){
+  
+  var kode_transaksi = $.urlParam('kode_transaksi');
+
+  
+  $.ajax({
+    type: "POST",
+    url: "http://ojek.aspima.id/request/driver_lain/",
+    data:{kode_transaksi:kode_transaksi},
+    success: function(data) {     
+
+    }
+  });
+}
+</script>
+<script type="text/javascript">
+
+var kode_transaksi = $.urlParam('kode_transaksi');
+$.ajax({
+  type: "POST",
+  data : {kode_transaksi:kode_transaksi},
+  dataType:'json',
+  url: "http://ojek.aspima.id/request_client/get_data_driver/",
+  success: function(data) {
+   $('.nama-driver').text(data.nama);
+
+
+ },
+ error: function (data) {
+
+ }
+});
+
+
+
+
+</script>
+<script>
+
+
+//setTimeout(function(){ window.location = 'home.html#/order'; }, 5000);
+
+ var kode_transaksi = $.urlParam('kode_transaksi');
+ var pusher = new Pusher('ee75187e221d6324a8ae', {
+  cluster: 'ap1'
+});
+ var channel = pusher.subscribe(kode_transaksi);
+ channel.bind('order', function(data) {
+  window.location.href = "home.html#/order?kode_transaksi="+kode_transaksi;
+});
+ channel.bind('tolak', function(data) {
+  $.ajax({
+    type: "POST",
+    data : {kode_transaksi:kode_transaksi},
+    dataType:'json',
+    url: "http://ojek.aspima.id/request_client/get_data_driver/",
+    success: function(data) {
+     $('.nama-driver').text(data.nama);
+
+
+   },
+   error: function (data) {
+
+   }
+ });
+});
+ channel.bind('tidak', function(data) {
+  $('.nama-driver').text('Mencari driver');
+ });
+</script>
+
+
+
+  <script type="text/javascript" src="js/materialize.js"></script>
+
+  <script src="js/lodash.js"></script>
+  
+  
+</body>
+</html>
+

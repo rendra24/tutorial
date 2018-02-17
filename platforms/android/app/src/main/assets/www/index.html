@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <!-- <script type="text/javascript" src="cordova.js"></script> -->
+<!--   <script type="text/javascript" src="device.js"></script> -->
+
+  <style type="text/css">
+  body
+  {
+    background: #FFF;
+  }
+</style>
+<script type="text/javascript">
+  // document.addEventListener("deviceready", onDeviceReady, false);
+
+  // function onDeviceReady() { 
+  
+  
+  //   //return false;
+  //   window.FirebasePlugin.getToken(function(token) {
+  //     if(token != '')
+  //     {
+
+  //       var uid = device.uuid; 
+  //       localStorage.clear();
+
+  //       minimal_jarak();
+  //       tarif_motor();
+  //       tarif_car();
+
+  //       var dev = localStorage.getItem('device');
+
+  //       if(dev== null){
+  //        $.ajax({
+  //         type: "POST",
+  //         data : {uid:uid,token:token},
+  //         url: "http://ojek.aspima.id/request_client/cek_client/",
+  //         success: function(data) {
+
+  //           if(data == 0)
+  //           {
+
+  //             window.location = "register.html";
+
+  //           }else if(data == 1)
+  //           {
+  //             window.location = "aktivasi.html";
+  //           }else{
+
+  //             window.location = "home.html";
+  //           }
+
+
+  //         },
+  //         error: function (data) {
+
+  //         }
+  //       });
+  //      }else{
+
+  //      }
+  //    }else{
+  //       location.reload();
+  //    }
+
+  //  }, function(error) {
+  //   console.error(error);
+  //   //alert(error);
+  // });
+
+
+  //   // var uid = device.uuid; 
+  //   //     localStorage.clear();
+
+  //   //     minimal_jarak();
+  //   //     tarif_motor();
+  //   //     tarif_car();
+
+  //   //     var dev = localStorage.getItem('device');
+
+  //   //     if(dev== null){
+  //   //      $.ajax({
+  //   //       type: "POST",
+  //   //       data : {uid:uid,token:token},
+  //   //       url: "http://ojek.aspima.id/request_client/cek_client/",
+  //   //       success: function(data) {
+
+  //   //         if(data == 0)
+  //   //         {
+
+  //   //           window.location = "register.html";
+
+  //   //         }else if(data == 1)
+  //   //         {
+  //   //           window.location = "aktivasi.html";
+  //   //         }else{
+
+  //   //           window.location = "home.html";
+  //   //         }
+
+
+  //   //       },
+  //   //       error: function (data) {
+
+  //   //       }
+  //   //     });
+  //   //    }else{
+
+  //   //    }
+
+
+  // }
+
+</script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+   window.location = "home.html";
+});
+
+//   function minimal_jarak(){
+//    $.ajax({
+//     type: "POST",
+//     url: "http://ojek.aspima.id/request_client/minimal_jarak/",
+//     success: function(data) {
+//       localStorage.setItem('minimal',data);
+
+
+//     },
+//   });
+//  }
+//  function tarif_motor(){
+//   $.ajax({
+//     type: "POST",
+//     dataType:"json",
+//     url: "http://ojek.aspima.id/request_client/tarif_motor/",
+//     success: function(data) {
+//       localStorage.setItem('motor1',data.tarif_1);
+//       localStorage.setItem('motor2',data.tarif_2);
+
+
+//     },
+//   });
+// }
+// function tarif_car(){
+//   $.ajax({
+//     type: "POST",
+//     dataType:"json",
+//     url: "http://ojek.aspima.id/request_client/tarif_car/",
+//     success: function(data) {
+//       localStorage.setItem('car1',data.tarif_1);
+//       localStorage.setItem('car2',data.tarif_2);
+
+
+//     },
+//   });
+// }
+
+
+</script>  
+</head>
+
+<body>
+
+ <div style="text-align: center;margin-top: 60%;"><img src="img/splas.png" style="    margin-top: 13%;height:100px;"></div>
+
+</body>
+</html>

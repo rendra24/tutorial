@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Route</title>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+	<link href="https://file.myfontastic.com/ooB2GoYAbwY7Mg6wgzc96/icons.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="css/materialize.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="cordova.js"></script>
+
+</head>
+<script type="text/javascript" charset="utf-8">
+
+	document.addEventListener("deviceready", onDeviceReady, false);
+
+	function onDeviceReady() {    
+		var uid = device.uuid; 
+		$('#device').val(uid); 
+		
+		//var device_client = '9075389C-C1C9-45EF-85ED-ACE38CDD5EDA';
+		var device_client = device.uuid;
+		$.ajax({
+        type: "POST",
+        url: "http://ojek.aspima.id/request_client/get_pendaftaran_client/",
+        data:{device_client:device_client},
+        dataType:'json',
+        success: function(data) {
+        
+  
+          var no_hp = data.telp;
+          var kode = data.kode_aktivasi;
+          var pesan = "Masukan "+ kode +" untuk aktivasi Obah.";
+      
+          $.ajax({
+            type: "POST",
+            url: "http://ojek.aspima.id/sample_api_masking_send_json.php",
+            data: {no_hp:no_hp, kode:kode, pesan:pesan},
+            success: function(data) {
+
+
+             
+
+            }
+          });
+        }
+      });
+		document.addEventListener("backbutton", onBackKeyDown, false);
+		
+
+
+	}
+
+	function onBackKeyDown()
+	{
+		var y = confirm("Keluar Aplikasi??");
+		if(y == true)
+		{
+
+			navigator.app.exitApp();
+		}
+	}
+
+
+	
+
+</script>
+<body style="background: url(img/register.png);">	
+<style type="text/css">
+	input[type=text]:focus:not([readonly])
+	{
+
+		    border-bottom: 1px solid #FFFFFF !important;
+    box-shadow: 0 1px 0 0 #FFFFFF !important;
+    
+}
+input[type=text],input[type=email]
+  {
+    color:#FFF;
+    font-size: 25px;
+  }
+label
+{
+	color: #FFF !important;
+}
+.btn-block
+    {
+      width: 100%;
+    }
+
+     nav
+ {
+      box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.14), 0 0px 0px 0 rgba(0, 0, 0, 0.12), 0 0px 0px 0px rgba(0, 0, 0, 0.2);
+}
+</style>
+ <div class="navbar-fixed">
+    <nav style="background: transparent;">
+      <div class="nav-wrapper">
+        
+         <a href="register.html"  class="button-collapse" style=" font-size: 1.5em;color: #FFFFFF;">Back</a>
+         <!-- <a href="#"  class="button-collapse" id="form_daftar" style="float: right;font-size: 1.5em;color: #FFFFFF;">Next</a> -->
+       
+      </div>
+    </nav>
+  </div>
+	<div class="container">
+	<h5 class="center" style="font-size: 1.24rem;color: #FFF;">Please enter the digit activation code that was sent to number below</h5>
+	<br><br>
+	<div class="row">
+		<div class="input-field col s4 offset-s4">
+		<input type="hidden" name="device" id="device"/>
+          <input id="kode" type="text" class="validate">
+          
+        </div>
+
+       
+	</div>
+<h5 class="center" style="font-size: 1.24rem;color: #FFF;">Didn-t get SMS?</h5><br>
+<a class="waves-effect waves-light btn btn-block btn-large" id="form_daftar">Next</a><br><br>
+ <a class="waves-effect waves-light btn btn-block btn-large" onclick="location.reload();" style="background-color: #9a9292;">Resend Activation Code</a>
+	
+	</div>
+<script type="text/javascript" src="js/materialize.js"></script>
+<script type="text/javascript">
+		$(document).ready(function() {
+
+			$("#form_daftar").click( function() { 
+				var device = $('#device').val();
+				var kode = $('#kode').val();
+
+				$.ajax( {  
+					type :"post",  
+					url : "http://ojek.aspima.id/request_client/aktifasi_client",  
+					cache :false,  
+					data :{device:device, kode:kode},
+					beforeSend:function(){
+						$(".tunggu").show();  
+					},    
+					success : function(data) {  
+						$(".tunggu").hide(); 
+						if(data == 0)
+						{
+							alert("Kode aktivasi yang anda masukkan salah !");
+							
+						}else
+						{
+							Materialize.toast('Pendaftaran Berhasil !', 4000);
+							window.location.href = "index.html";
+						}
+
+					},  
+					error : function() {  
+						alert("Data gagal dimasukkan.");  
+					}  
+				});
+				return false;    
+
+			});																
+
+
+		});
+
+	</script>
+</body>
+</html>
